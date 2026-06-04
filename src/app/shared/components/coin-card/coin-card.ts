@@ -15,8 +15,8 @@ import { PriceColorDirective } from '../../directives/price-color.directive';
   selector: 'app-coin-card',
   standalone: true,
   imports: [UpperCasePipe, FormatCurrencyPipe, PercentagePipe, PriceColorDirective],
-  templateUrl: './coin-card.component.html',
-  styleUrl: './coin-card.component.scss'
+  templateUrl: './coin-card.html',
+  styleUrl: './coin-card.scss'
 })
 export class CoinCardComponent {
   @Input() coin!: Coin;

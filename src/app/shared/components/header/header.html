@@ -1,0 +1,30 @@
+<header class="header">
+  <div class="container header-content">
+    <!-- Logo -->
+    <a routerLink="/home" class="logo">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+      </svg>
+      <span class="logo-text">Crypto<span class="highlight">Radar</span></span>
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="nav-links">
+      <a routerLink="/home" routerLinkActive="active" class="nav-link">Inicio</a>
+      <a routerLink="/search" routerLinkActive="active" class="nav-link">Buscar</a>
+      <a routerLink="/favorites" routerLinkActive="active" class="nav-link">Favoritos</a>
+    </nav>
+
+    <!-- Right Side: Global Market Data -->
+    <div class="market-badge">
+      <span class="live-indicator"></span>
+      @if (marketCap()) {
+        <span class="mcap" [class.up]="isMarketUp()" [class.down]="!isMarketUp()">
+          Mcap: ${{ marketCap() | number:'1.0-1' }}T
+        </span>
+      } @else {
+        <span class="mcap loading">Cargando...</span>
+      }
+    </div>
+  </div>
+</header>

@@ -1,0 +1,24 @@
+<section class="hero">
+  <div class="container">
+    <h1 class="hero-title">Mercado Crypto en <span class="highlight">Tiempo Real</span></h1>
+    <p class="hero-subtitle">Monitorea las principales criptomonedas del mundo</p>
+
+    <!-- Métricas Globales -->
+    @if (globalData) {
+      <div class="global-metrics">
+        <div class="metric-card">
+          <span class="metric-label">💰 Market Cap Total</span>
+          <span class="metric-value">{{ globalData.data.total_market_cap['usd'] | formatCurrency }}</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">₿ Dominancia BTC</span>
+          <span class="metric-value">{{ globalData.data.market_cap_percentage['btc'] | number:'1.1-1' }}%</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">🪙 Monedas Activas</span>
+          <span class="metric-value">{{ globalData.data.active_cryptocurrencies | number }}</span>
+        </div>
+      </div>
+    }
+  </div>
+</section>

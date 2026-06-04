@@ -1,0 +1,33 @@
+<div class="chart-container">
+  
+  <!-- Controles de período -->
+  <div class="chart-controls">
+    <div class="period-selector">
+      @for (period of periods; track period.value) {
+        <button 
+          class="period-btn" 
+          [class.active]="currentPeriod === period.value"
+          [disabled]="isLoading"
+          (click)="onPeriodSelect(period.value)">
+          {{ period.label }}
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Gráfica o Skeleton -->
+  <div class="canvas-wrapper">
+    @if (isLoading) {
+      <div class="chart-skeleton"></div>
+    } @else {
+      <canvas 
+        #chartCanvas
+        baseChart 
+        [type]="lineChartType"
+        [data]="lineChartData"
+        [options]="lineChartOptions">
+      </canvas>
+    }
+  </div>
+
+</div>

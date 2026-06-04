@@ -1,0 +1,209 @@
+<div class="details-page container">
+  
+  <!-- BACK BUTTON -->
+  <button class="back-btn" (click)="goBack()">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+      <line x1="19" y1="12" x2="5" y2="12"></line>
+      <polyline points="12 19 5 12 12 5"></polyline>
+    </svg>
+    Volver
+  </button>
+
+  @if (isLoadingCoin()) {
+    <!-- SKELETON LOADER -->
+    <div class="skeleton-layout">
+      <div class="sk-left">
+        <div class="sk-logo"></div>
+        <div class="sk-title"></div>
+        <div class="sk-price"></div>
+        <div class="sk-btn"></div>
+      </div>
+      <div class="sk-right">
+        <div class="sk-chart"></div>
+      </div>
+    </div>
+  }
+  @else if (hasError() || !coin()) {
+    <!-- ERROR / NOT FOUND -->
+    <div class="error-state">
+      <div class="icon">🛸</div>
+      <h3>Esta moneda no está en nuestro radar</h3>
+      <p>No pudimos encontrar la criptomoneda que buscas.</p>
+      <button class="primary-btn" routerLink="/home">Explorar el mercado</button>
+    </div>
+  }
+  @else {
+    <!-- CONTENT -->
+    <div class="details-layout">
+      
+      <!-- COLUMNA IZQUIERDA (Info principal) -->
+      <div class="col-left">
+        <span class="rank-badge">Rank #{{ coin().market_cap_rank || '?' }}</span>
+        
+        <div class="coin-header">
+          <img [src]="coin().image.large" [alt]="coin().name" loading="lazy" class="coin-logo">
+          <div class="coin-titles">
+            <h1 class="coin-name">{{ coin().name }}</h1>
+            <span class="coin-symbol">{{ coin().symbol | uppercase }} · Criptomoneda</span>
+          </div>
+        </div>
+
+        <div class="price-section">
+          <h2 class="current-price">{{ coin().market_data.current_price.usd | formatCurrency }}</h2>
+          <span class="price-change large" [priceColor]="coin().market_data.price_change_percentage_24h">
+            {{ coin().market_data.price_change_percentage_24h >= 0 ? '▲' : '▼' }}
+            {{ coin().market_data.price_change_percentage_24h | percentage }}
+          </span>
+        </div>
+
+        <div class="action-buttons">
+          <button 
+            class="fav-btn" 
+            [class.active]="isFavorite()" 
+            (click)="toggleFavorite()">
+            {{ isFavorite() ? '★ En tu Radar' : '☆ Agregar a Favoritos' }}
+          </button>
+          
+          <div class="links">
+            @if (coin().links.homepage[0]) {
+              <a [href]="coin().links.homepage[0]" target="_blank" class="link-btn">🌐 Sitio Web</a>
+            }
+            @if (coin().links.repos_url.github[0]) {
+              <a [href]="coin().links.repos_url.github[0]" target="_blank" class="link-btn">GitHub</a>
+            }
+          </div>
+        </div>
+
+        <div class="price-changes-grid">
+          <h3 class="box-title">Cambios de precio</h3>
+          <div class="changes-list">
+            <div class="change-item">
+              <span class="lbl">24h:</span>
+              <span [priceColor]="coin().market_data.price_change_percentage_24h">
+                {{ coin().market_data.price_change_percentage_24h | percentage }}
+              </span>
+            </div>
+            <div class="change-item">
+              <span class="lbl">7d:</span>
+              <span [priceColor]="coin().market_data.price_change_percentage_7d">
+                {{ coin().market_data.price_change_percentage_7d | percentage }}
+              </span>
+            </div>
+            <div class="change-item">
+              <span class="lbl">30d:</span>
+              <span [priceColor]="coin().market_data.price_change_percentage_30d">
+                {{ coin().market_data.price_change_percentage_30d | percentage }}
+              </span>
+            </div>
+            <div class="change-item">
+              <span class="lbl">1año:</span>
+              <span [priceColor]="coin().market_data.price_change_percentage_1y">
+                {{ coin().market_data.price_change_percentage_1y | percentage }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMNA DERECHA (Gráfica) -->
+      <div class="col-right">
+        <div class="chart-box">
+          <app-price-chart 
+            [chartData]="chartData()" 
+            [coinName]="coin().name"
+            [isPositive]="coin().market_data.price_change_percentage_24h >= 0"
+            [isLoading]="isLoadingChart()"
+            [currentPeriod]="selectedPeriod()"
+            (periodChange)="onPeriodChange($event)">
+          </app-price-chart>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN INFERIOR -->
+    <div class="bottom-section">
+      
+      <!-- Conversor -->
+      <div class="converter-box">
+        <h3 class="box-title">Conversor Rápido</h3>
+        <div class="converter-inputs">
+          <div class="input-group">
+            <input type="number" [(ngModel)]="conversorAmount" class="num-input" min="0">
+            <span class="currency-lbl">{{ coin().symbol | uppercase }}</span>
+          </div>
+          <span class="equals">=</span>
+          <div class="input-group">
+            <div class="result-val">{{ convertedValue() | number:'1.2-4' }}</div>
+            <select class="currency-select" (change)="onCurrencyChange($event)">
+              <option value="usd">USD</option>
+              <option value="eur">EUR</option>
+              <option value="cop">COP</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid de Métricas 4 columnas -->
+      <div class="metrics-grid">
+        <div class="metric-item">
+          <span class="m-label">Market Cap</span>
+          <span class="m-value">{{ coin().market_data.market_cap.usd | formatCurrency }}</span>
+        </div>
+        <div class="metric-item">
+          <span class="m-label">Volumen 24h</span>
+          <span class="m-value">{{ coin().market_data.total_volume.usd | formatCurrency }}</span>
+        </div>
+        <div class="metric-item">
+          <span class="m-label">Supply Circulante</span>
+          <span class="m-value">{{ coin().market_data.circulating_supply | formatCurrency }}</span>
+        </div>
+        <div class="metric-item">
+          <span class="m-label">Supply Total</span>
+          <span class="m-value">{{ (coin().market_data.total_supply || 0) | formatCurrency }}</span>
+        </div>
+      </div>
+
+      <!-- Históricos y 24h -->
+      <div class="history-grid">
+        <div class="history-box">
+          <h3 class="box-title">Récords Históricos</h3>
+          <div class="h-row">
+            <span class="lbl">Máximo (ATH):</span>
+            <div class="val">
+              <span>{{ coin().market_data.ath.usd | formatCurrency }}</span>
+              <span class="date">{{ coin().market_data.ath_date.usd | date:'MMM yyyy' }}</span>
+            </div>
+          </div>
+          <div class="h-row">
+            <span class="lbl">Mínimo (ATL):</span>
+            <div class="val">
+              <span>{{ coin().market_data.atl.usd | formatCurrency }}</span>
+              <span class="date">{{ coin().market_data.atl_date.usd | date:'MMM yyyy' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="history-box">
+          <h3 class="box-title">Rango de 24h</h3>
+          <div class="h-row">
+            <span class="lbl">Máximo 24h:</span>
+            <span class="val-bold">{{ coin().market_data.high_24h.usd | formatCurrency }}</span>
+          </div>
+          <div class="h-row">
+            <span class="lbl">Mínimo 24h:</span>
+            <span class="val-bold">{{ coin().market_data.low_24h.usd | formatCurrency }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Descripción HTML -->
+      @if (coin().description?.en) {
+        <div class="about-box">
+          <h3 class="box-title">Acerca de {{ coin().name }}</h3>
+          <div class="html-desc" [innerHTML]="safeDescription()"></div>
+        </div>
+      }
+
+    </div>
+  }
+</div>

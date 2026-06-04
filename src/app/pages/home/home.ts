@@ -3,10 +3,11 @@ import { DecimalPipe } from '@angular/common';
 import { CryptoService } from '../../core/services/crypto.service';
 import { Coin } from '../../core/models/coin.model';
 import { GlobalMarket } from '../../core/models/global-market.model';
-import { CoinCardComponent } from '../../shared/components/coin-card/coin-card.component';
-import { SkeletonCardComponent } from '../../shared/components/skeleton-card/skeleton-card.component';
+import { CoinCardComponent } from '../../shared/components/coin-card/coin-card';
+import { SkeletonCardComponent } from '../../shared/components/skeleton-card/skeleton-card';
 import { FormatCurrencyPipe } from '../../shared/pipes/format-currency.pipe';
-import { SearchBarComponent } from '../../shared/components/search-bar/search-bar.component';
+import { SearchBarComponent } from '../../shared/components/search-bar/search-bar';
+import { HeroComponent } from '../../shared/components/hero/hero';
 import { Router } from '@angular/router';
 
 /**
@@ -22,10 +23,11 @@ import { Router } from '@angular/router';
     CoinCardComponent,
     SkeletonCardComponent,
     FormatCurrencyPipe,
-    SearchBarComponent
+    SearchBarComponent,
+    HeroComponent
   ],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  templateUrl: './home.html',
+  styleUrl: './home.scss'
 })
 export class HomeComponent implements OnInit {
   private cryptoService = inject(CryptoService);

@@ -2,8 +2,8 @@ import { Component, OnInit, inject, signal, computed, effect } from '@angular/co
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { CryptoService } from '../../core/services/crypto.service';
 import { Coin } from '../../core/models/coin.model';
-import { SearchBarComponent } from '../../shared/components/search-bar/search-bar.component';
-import { SpinnerComponent } from '../../shared/components/spinner/spinner.component';
+import { SearchBarComponent } from '../../shared/components/search-bar/search-bar';
+import { SpinnerComponent } from '../../shared/components/spinner/spinner';
 import { HighlightPipe } from '../../shared/pipes/highlight.pipe';
 import { FormatCurrencyPipe } from '../../shared/pipes/format-currency.pipe';
 
@@ -20,8 +20,8 @@ interface SearchResultCoin {
   selector: 'app-search',
   standalone: true,
   imports: [SearchBarComponent, SpinnerComponent, HighlightPipe, FormatCurrencyPipe, RouterLink],
-  templateUrl: './search.component.html',
-  styleUrl: './search.component.scss'
+  templateUrl: './search.html',
+  styleUrl: './search.scss'
 })
 export class SearchComponent implements OnInit {
   private cryptoService = inject(CryptoService);
