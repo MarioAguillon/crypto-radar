@@ -1,0 +1,107 @@
+<div class="search-page container">
+  <!-- Header de Búsqueda -->
+  <section class="search-header">
+    <h1 class="page-title">Explorar el <span class="highlight">Mercado</span></h1>
+    <p class="page-subtitle">Busca entre más de 10,000 criptomonedas en tiempo real</p>
+    
+    <app-search-bar 
+      [initialValue]="searchTerm()"
+      placeholder="Ej: Bitcoin, ETH, Solana..."
+      (searchChange)="onSearchChange($event)">
+    </app-search-bar>
+
+    <div class="suggested-tags">
+      @for (tag of suggestedTags; track tag) {
+        <button class="tag-btn" (click)="onTagClick(tag)">{{ tag }}</button>
+      }
+    </div>
+  </section>
+
+  <div class="content-area">
+    
+    <!-- ESTADO 2: Cargando -->
+    @if (isLoading()) {
+      <div class="loading-state">
+        <app-spinner size="lg"></app-spinner>
+        <p class="loading-text">Buscando "{{ searchTerm() }}"...</p>
+        
+        <div class="skeleton-list">
+          <div class="skeleton-row"></div>
+          <div class="skeleton-row"></div>
+          <div class="skeleton-row"></div>
+        </div>
+      </div>
+    } 
+    
+    <!-- ESTADO 5: Error -->
+    @else if (hasError()) {
+      <div class="error-state">
+        <div class="icon">⚠️</div>
+        <h3>Error de conexión</h3>
+        <p>No pudimos conectar con los satélites de CoinGecko.</p>
+        <button class="retry-btn" (click)="executeSearch(searchTerm())">🔄 Reintentar</button>
+      </div>
+    }
+    
+    <!-- ESTADO 3: Con resultados -->
+    @else if (hasSearched() && resultsCount() > 0) {
+      <div class="results-state">
+        <h3 class="results-count">{{ resultsCount() }} resultados para "{{ searchTerm() }}"</h3>
+        
+        <div class="results-list">
+          @for (coin of searchResults(); track coin.id) {
+            <a [routerLink]="['/details', coin.id]" class="result-row">
+              <div class="result-left">
+                <img [src]="coin.thumb" [alt]="coin.name" class="result-thumb" loading="lazy">
+                <div class="result-info">
+                  <span class="result-name" [innerHTML]="coin.name | highlight:searchTerm()"></span>
+                  <span class="result-symbol" [innerHTML]="coin.symbol | highlight:searchTerm()"></span>
+                </div>
+              </div>
+              <div class="result-right">
+                @if (coin.market_cap_rank) {
+                  <span class="result-rank">Rank #{{ coin.market_cap_rank }}</span>
+                }
+                <span class="arrow">→</span>
+              </div>
+            </a>
+          }
+        </div>
+      </div>
+    }
+    
+    <!-- ESTADO 4: Sin resultados (Empty State Premium) -->
+    @else if (hasSearched() && resultsCount() === 0) {
+      <div class="empty-state">
+        <svg class="empty-illustration" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path>
+          <circle cx="12" cy="12" r="4"></circle>
+        </svg>
+        <h2 class="empty-title">Sin señal en el radar</h2>
+        <p class="empty-desc">No encontramos ninguna moneda que coincida con "<strong>{{ searchTerm() }}</strong>".</p>
+        <button class="clear-btn" (click)="clearSearch()">Limpiar búsqueda</button>
+      </div>
+    }
+    
+    <!-- ESTADO 1: Inicial (Tendencias) -->
+    @else {
+      <div class="initial-state">
+        <h3 class="section-title">🔥 Tendencias (Top 10)</h3>
+        <p class="section-desc">Las criptomonedas más grandes del mercado en este momento.</p>
+        
+        <div class="trending-scroll">
+          @for (coin of trendingCoins(); track coin.id) {
+            <a [routerLink]="['/details', coin.id]" class="trending-card">
+              <img [src]="coin.image" [alt]="coin.name">
+              <div class="tc-info">
+                <span class="tc-name">{{ coin.name }}</span>
+                <span class="tc-price">{{ coin.current_price | formatCurrency }}</span>
+              </div>
+            </a>
+          }
+        </div>
+      </div>
+    }
+
+  </div>
+</div>

@@ -24,6 +24,15 @@
   </div>
 </section>
 
+<!-- ===== BÚSQUEDA LOCAL ===== -->
+<section class="container search-section" style="margin-bottom: 2rem;">
+  <app-search-bar 
+    placeholder="Buscar moneda en el top 20... (Presiona Enter para buscar en todo el mercado)"
+    (searchChange)="onSearchChange($event)"
+    (enterPressed)="onSearchEnter($event)">
+  </app-search-bar>
+</section>
+
 <!-- ===== TAB BAR ===== -->
 <section class="container">
   <div class="tab-bar">

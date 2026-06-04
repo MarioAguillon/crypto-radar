@@ -6,6 +6,8 @@ import { GlobalMarket } from '../../core/models/global-market.model';
 import { CoinCardComponent } from '../../shared/components/coin-card/coin-card.component';
 import { SkeletonCardComponent } from '../../shared/components/skeleton-card/skeleton-card.component';
 import { FormatCurrencyPipe } from '../../shared/pipes/format-currency.pipe';
+import { SearchBarComponent } from '../../shared/components/search-bar/search-bar.component';
+import { Router } from '@angular/router';
 
 /**
  * Página principal del dashboard CryptoRadar.
@@ -19,16 +21,19 @@ import { FormatCurrencyPipe } from '../../shared/pipes/format-currency.pipe';
     DecimalPipe,
     CoinCardComponent,
     SkeletonCardComponent,
-    FormatCurrencyPipe
+    FormatCurrencyPipe,
+    SearchBarComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit {
   private cryptoService = inject(CryptoService);
+  private router = inject(Router);
 
   // --- Estado con Signals ---
   allCoins = signal<Coin[]>([]);
+  searchQuery = signal<string>('');
   isLoading = signal<boolean>(true);
   hasError = signal<boolean>(false);
   activeTab = signal<'top' | 'gainers' | 'losers'>('top');
@@ -42,7 +47,18 @@ export class HomeComponent implements OnInit {
    * Se recalcula automáticamente cuando allCoins o activeTab cambian.
    */
   filteredCoins = computed(() => {
-    const coins = [...this.allCoins()];
+    let coins = [...this.allCoins()];
+    
+    // Filtrar localmente por texto si hay búsqueda
+    const query = this.searchQuery().toLowerCase();
+    if (query) {
+      coins = coins.filter(c => 
+        c.name.toLowerCase().includes(query) || 
+        c.symbol.toLowerCase().includes(query)
+      );
+    }
+
+    // Ordenar según pestaña
     switch (this.activeTab()) {
       case 'gainers':
         return coins.sort(
@@ -96,5 +112,17 @@ export class HomeComponent implements OnInit {
   onToggleFavorite(coin: Coin): void {
     // Se implementará en el Día 7 con FavoritesService + LocalStorage
     console.log('Toggle favorito:', coin.name);
+  }
+
+  /** Handler para la búsqueda local */
+  onSearchChange(term: string): void {
+    this.searchQuery.set(term);
+  }
+
+  /** Navegar a la página de búsqueda completa al presionar Enter */
+  onSearchEnter(term: string): void {
+    if (term.trim().length > 0) {
+      this.router.navigate(['/search'], { queryParams: { q: term.trim() } });
+    }
   }
 }
