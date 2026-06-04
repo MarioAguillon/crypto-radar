@@ -1,0 +1,46 @@
+<div class="coin-card" (click)="navigateToDetail()">
+  <!-- Rank badge -->
+  <span class="rank">#{{ coin.market_cap_rank }}</span>
+
+  <!-- Header: Logo + Nombre -->
+  <div class="card-header">
+    <img
+      [src]="coin.image"
+      [alt]="coin.name + ' logo'"
+      width="40"
+      height="40"
+      loading="lazy"
+      (error)="onImageError($event)"
+      class="coin-logo"
+    />
+    <div class="coin-identity">
+      <h3 class="coin-name">{{ coin.name }}</h3>
+      <span class="coin-symbol">{{ coin.symbol | uppercase }}</span>
+    </div>
+  </div>
+
+  <!-- Body: Precio y métricas -->
+  <div class="card-body">
+    <p class="price">{{ coin.current_price | formatCurrency }}</p>
+
+    <div class="stats-row">
+      <span class="change" [priceColor]="coin.price_change_percentage_24h">
+        {{ coin.price_change_percentage_24h >= 0 ? '▲' : '▼' }}
+        {{ coin.price_change_percentage_24h | percentage }}
+      </span>
+      <span class="volume">Vol: {{ coin.total_volume | formatCurrency }}</span>
+    </div>
+
+    <p class="mcap">Mcap: {{ coin.market_cap | formatCurrency }}</p>
+  </div>
+
+  <!-- Botón de Favorito -->
+  <button
+    class="fav-btn"
+    [class.active]="isFavorite"
+    (click)="onToggleFavorite($event)"
+    [attr.aria-label]="isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'"
+  >
+    {{ isFavorite ? '★' : '☆' }}
+  </button>
+</div>

@@ -1,0 +1,88 @@
+import { Component } from '@angular/core';
+
+/**
+ * Componente de tarjeta esqueleto (skeleton card).
+ * Se muestra mientras los datos reales cargan desde la API.
+ * Usa animación shimmer CSS para dar sensación de carga activa.
+ */
+@Component({
+  selector: 'app-skeleton-card',
+  standalone: true,
+  template: `
+    <div class="skeleton-card">
+      <div class="skeleton-header">
+        <div class="skeleton-circle"></div>
+        <div class="skeleton-text-group">
+          <div class="skeleton-line w-60"></div>
+          <div class="skeleton-line w-40"></div>
+        </div>
+      </div>
+      <div class="skeleton-body">
+        <div class="skeleton-line w-50 tall"></div>
+        <div class="skeleton-line w-70"></div>
+        <div class="skeleton-line w-30"></div>
+      </div>
+    </div>
+  `,
+  styles: [`
+    .skeleton-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .skeleton-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .skeleton-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: linear-gradient(90deg, var(--bg-secondary) 25%, rgba(255,255,255,0.05) 50%, var(--bg-secondary) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+
+    .skeleton-text-group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .skeleton-body {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .skeleton-line {
+      height: 12px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--bg-secondary) 25%, rgba(255,255,255,0.05) 50%, var(--bg-secondary) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+
+      &.tall { height: 22px; }
+      &.w-30 { width: 30%; }
+      &.w-40 { width: 40%; }
+      &.w-50 { width: 50%; }
+      &.w-60 { width: 60%; }
+      &.w-70 { width: 70%; }
+    }
+
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+  `]
+})
+export class SkeletonCardComponent {}
