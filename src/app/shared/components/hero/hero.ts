@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { FormatCurrencyPipe } from '../../../shared/pipes/format-currency.pipe';
 import { GlobalMarket } from '../../../core/models/global-market.model';
@@ -8,6 +8,7 @@ import { GlobalMarket } from '../../../core/models/global-market.model';
   standalone: true,
   imports: [CommonModule, DecimalPipe, FormatCurrencyPipe],
   templateUrl: './hero.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './hero.scss'
 })
 export class HeroComponent {

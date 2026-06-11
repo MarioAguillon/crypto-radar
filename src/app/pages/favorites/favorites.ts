@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-favorites',
@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
       <p>Aquí se mostrarán las monedas guardadas en LocalStorage.</p>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [`
     .page-placeholder {
       padding: 4rem 1.5rem;

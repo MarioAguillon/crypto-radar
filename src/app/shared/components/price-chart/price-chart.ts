@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnChanges, SimpleChanges, signal } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild, ElementRef, OnChanges, SimpleChanges, signal, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartType, ChartOptions, TooltipItem, ScriptableContext } from 'chart.js';
@@ -8,6 +8,7 @@ import { ChartConfiguration, ChartType, ChartOptions, TooltipItem, ScriptableCon
   standalone: true,
   imports: [CommonModule, BaseChartDirective],
   templateUrl: './price-chart.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './price-chart.scss'
 })
 export class PriceChartComponent implements OnChanges {

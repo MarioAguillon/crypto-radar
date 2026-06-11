@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, computed, effect } from '@angular/core';
+import { Component, OnInit, inject, signal, computed, effect, ChangeDetectionStrategy } from '@angular/core';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { CryptoService } from '../../core/services/crypto.service';
 import { Coin } from '../../core/models/coin.model';
@@ -21,6 +21,7 @@ interface SearchResultCoin {
   standalone: true,
   imports: [SearchBarComponent, SpinnerComponent, HighlightPipe, FormatCurrencyPipe, RouterLink],
   templateUrl: './search.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './search.scss'
 })
 export class SearchComponent implements OnInit {

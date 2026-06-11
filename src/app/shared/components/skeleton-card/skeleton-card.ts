@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 /**
  * Componente de tarjeta esqueleto (skeleton card).
@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
   selector: 'app-skeleton-card',
   standalone: true,
   templateUrl: './skeleton-card.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './skeleton-card.scss'
 })
 export class SkeletonCardComponent {}

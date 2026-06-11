@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, computed, effect } from '@angular/core';
+import { Component, OnInit, inject, signal, computed, effect, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -24,6 +24,7 @@ import { PriceColorDirective } from '../../shared/directives/price-color.directi
     PriceColorDirective
   ],
   templateUrl: './details.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './details.scss'
 })
 export class DetailsComponent implements OnInit {

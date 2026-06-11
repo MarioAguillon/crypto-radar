@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, OnDestroy, signal } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, OnDestroy, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -8,6 +8,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
   standalone: true,
   imports: [FormsModule],
   templateUrl: './search-bar.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './search-bar.scss'
 })
 export class SearchBarComponent implements OnInit, OnDestroy {

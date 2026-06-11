@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { UpperCasePipe } from '@angular/common';
 import { Coin } from '../../../core/models/coin.model';
@@ -16,6 +16,7 @@ import { PriceColorDirective } from '../../directives/price-color.directive';
   standalone: true,
   imports: [UpperCasePipe, FormatCurrencyPipe, PercentagePipe, PriceColorDirective],
   templateUrl: './coin-card.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './coin-card.scss'
 })
 export class CoinCardComponent {

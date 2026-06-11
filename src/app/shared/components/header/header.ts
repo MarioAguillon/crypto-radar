@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CryptoService } from '../../../core/services/crypto.service';
@@ -8,6 +8,7 @@ import { CryptoService } from '../../../core/services/crypto.service';
   standalone: true,
   imports: [RouterLink, RouterLinkActive, DecimalPipe],
   templateUrl: './header.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './header.scss'
 })
 export class HeaderComponent implements OnInit {

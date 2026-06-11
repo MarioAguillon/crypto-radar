@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
+import { Component, OnInit, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { CryptoService } from '../../core/services/crypto.service';
 import { Coin } from '../../core/models/coin.model';
@@ -27,6 +27,7 @@ import { Router } from '@angular/router';
     HeroComponent
   ],
   templateUrl: './home.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './home.scss'
 })
 export class HomeComponent implements OnInit {
