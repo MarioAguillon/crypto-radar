@@ -95,7 +95,7 @@ export class FavoritesService {
     }
   }
 
-  private triggerToast(message: string, type: 'success' | 'error' | 'info'): void {
+  triggerToast(message: string, type: 'success' | 'error' | 'info'): void {
     this.toastMessage.set(message);
     this.toastType.set(type);
     this.showToast.set(true);

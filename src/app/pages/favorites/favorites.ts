@@ -15,7 +15,7 @@ type SortType = 'default' | 'price_desc' | 'perf_desc' | 'perf_asc';
 @Component({
   selector: 'app-favorites',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormatCurrencyPipe, PercentagePipe, PriceColorDirective, DecimalPipe],
+  imports: [CommonModule, RouterLink, FormatCurrencyPipe, PercentagePipe, PriceColorDirective],
   templateUrl: './favorites.html',
   styleUrl: './favorites.scss'
 })

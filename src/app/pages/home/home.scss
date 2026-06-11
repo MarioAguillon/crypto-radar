@@ -113,6 +113,29 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
+
+  app-coin-card {
+    display: block;
+    opacity: 0;
+    animation: cardEntrance 0.4s ease forwards;
+  }
+
+  @for $i from 1 through 20 {
+    app-coin-card:nth-child(#{$i}) {
+      animation-delay: #{$i * 50}ms;
+    }
+  }
+}
+
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ===== ESTADOS VACÍOS Y ERROR ===== */

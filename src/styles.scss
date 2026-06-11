@@ -50,6 +50,32 @@ body {
   background: var(--text-secondary);
 }
 
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-card) 25%,
+    rgba(255,255,255,0.06) 37%,
+    var(--bg-card) 63%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 1.4s infinite linear;
+  border-radius: 4px;
+}
+
+@keyframes routeFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.route-content {
+  animation: routeFade 0.3s ease;
+}
+
 a {
   text-decoration: none;
   color: inherit;

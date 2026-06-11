@@ -1,11 +1,11 @@
 import { Component, OnInit, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
-import { DecimalPipe } from '@angular/common';
+
 import { CryptoService } from '../../core/services/crypto.service';
 import { Coin } from '../../core/models/coin.model';
 import { GlobalMarket } from '../../core/models/global-market.model';
 import { CoinCardComponent } from '../../shared/components/coin-card/coin-card';
 import { SkeletonCardComponent } from '../../shared/components/skeleton-card/skeleton-card';
-import { FormatCurrencyPipe } from '../../shared/pipes/format-currency.pipe';
+
 import { SearchBarComponent } from '../../shared/components/search-bar/search-bar';
 import { HeroComponent } from '../../shared/components/hero/hero';
 import { Router } from '@angular/router';
@@ -19,10 +19,8 @@ import { Router } from '@angular/router';
   selector: 'app-home',
   standalone: true,
   imports: [
-    DecimalPipe,
     CoinCardComponent,
     SkeletonCardComponent,
-    FormatCurrencyPipe,
     SearchBarComponent,
     HeroComponent
   ],

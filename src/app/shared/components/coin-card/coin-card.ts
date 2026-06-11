@@ -41,6 +41,6 @@ export class CoinCardComponent {
 
   /** Fallback si la imagen del logo no carga */
   onImageError(event: Event): void {
-    (event.target as HTMLImageElement).src = 'https://via.placeholder.com/40x40?text=?';
+    (event.target as HTMLImageElement).src = 'assets/images/coin-placeholder.svg';
   }
 }

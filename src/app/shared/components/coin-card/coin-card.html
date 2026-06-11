@@ -7,10 +7,11 @@
     <img
       [src]="coin().image"
       [alt]="coin().name + ' logo'"
+      (error)="onImageError($event)"
       width="40"
       height="40"
       loading="lazy"
-      (error)="onImageError($event)"
+      referrerpolicy="no-referrer"
       class="coin-logo"
     />
     <div class="coin-identity">

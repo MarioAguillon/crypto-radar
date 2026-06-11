@@ -427,6 +427,18 @@
   p { color: var(--text-secondary); margin-bottom: 2rem; }
 }
 
+/* --- Page-level entrance animations --- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.details-page {
+  > .back-btn { animation: fadeIn 0.4s ease forwards; }
+  > .details-layout { opacity: 0; animation: fadeIn 0.5s ease 0.15s forwards; }
+  > .bottom-section { opacity: 0; animation: fadeIn 0.5s ease 0.3s forwards; }
+}
+
 .primary-btn {
   background: var(--accent-orange);
   color: #fff;
