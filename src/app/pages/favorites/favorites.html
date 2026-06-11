@@ -1,0 +1,124 @@
+<div class="favorites-page container">
+  <!-- ESTADO VACÍO -->
+  @if (favorites().length === 0) {
+    <div class="empty-state premium-empty">
+      <div class="radar-svg-wrapper">
+        <svg viewBox="0 0 100 100" class="radar-svg">
+          <circle cx="50" cy="50" r="45" stroke="var(--border-color)" stroke-width="2" fill="none" />
+          <circle cx="50" cy="50" r="30" stroke="var(--border-color)" stroke-width="2" fill="none" />
+          <circle cx="50" cy="50" r="15" stroke="var(--border-color)" stroke-width="2" fill="none" />
+          <circle cx="50" cy="50" r="2" fill="var(--text-secondary)" />
+          <line x1="50" y1="50" x2="50" y2="5" stroke="var(--border-color)" stroke-width="2" />
+          <line x1="50" y1="50" x2="95" y2="50" stroke="var(--border-color)" stroke-width="2" />
+        </svg>
+      </div>
+      <h2>Tu Radar está vacío</h2>
+      <p>Aún no tienes monedas en seguimiento. Empieza a explorar el mercado y agrega las monedas que quieres monitorear.</p>
+      <a routerLink="/home" class="explore-btn">🔍 Explorar el Mercado</a>
+    </div>
+  } @else {
+    <!-- HEADER -->
+    <div class="page-header">
+      <div class="header-left">
+        <h1>⭐ Mi Radar</h1>
+        <div class="meta-info">
+          <span>{{ favorites().length }} moneda{{ favorites().length !== 1 ? 's' : '' }} en seguimiento</span>
+          @if (lastUpdated()) {
+            <span class="divider">•</span>
+            <span>Última actualización: hace unos instantes</span>
+          }
+        </div>
+      </div>
+      <div class="header-right">
+        <button class="refresh-btn" [class.spinning]="isUpdatingPrices()" (click)="refreshPrices()">
+          ↻ Actualizar
+        </button>
+        <button class="clear-btn" (click)="confirmClearAll()">
+          🗑 Limpiar todo
+        </button>
+      </div>
+    </div>
+
+    <!-- INLINE CONFIRMATION MODAL -->
+    @if (showClearConfirm()) {
+      <div class="confirm-modal">
+        <p>¿Seguro que quieres limpiar tu Radar por completo?</p>
+        <div class="confirm-actions">
+          <button class="cancel-btn" (click)="cancelClear()">Cancelar</button>
+          <button class="danger-btn" (click)="executeClearAll()">Sí, limpiar todo</button>
+        </div>
+      </div>
+    }
+
+    <!-- RESUMEN FINANCIERO -->
+    <div class="summary-cards">
+      <div class="summary-card">
+        <span class="label">Mejor rendimiento</span>
+        @if (bestPerformer(); as best) {
+          <div class="value-row">
+            <span class="name">{{ best.name }}</span>
+            <span [priceColor]="best.price_change_percentage_24h" class="perf">
+              {{ best.price_change_percentage_24h | percentage }}
+            </span>
+          </div>
+        }
+      </div>
+      <div class="summary-card">
+        <span class="label">Peor rendimiento</span>
+        @if (worstPerformer(); as worst) {
+          <div class="value-row">
+            <span class="name">{{ worst.name }}</span>
+            <span [priceColor]="worst.price_change_percentage_24h" class="perf">
+              {{ worst.price_change_percentage_24h | percentage }}
+            </span>
+          </div>
+        }
+      </div>
+      <div class="summary-card">
+        <span class="label">Promedio del Radar (24h)</span>
+        <div class="value-row">
+          <span [priceColor]="averagePerformance()" class="perf big">
+            {{ averagePerformance() | percentage }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORDENAMIENTO -->
+    <div class="sort-chips">
+      <button class="chip" [class.active]="sortBy() === 'default'" (click)="setSort('default')">Por defecto</button>
+      <button class="chip" [class.active]="sortBy() === 'price_desc'" (click)="setSort('price_desc')">Mayor precio</button>
+      <button class="chip" [class.active]="sortBy() === 'perf_desc'" (click)="setSort('perf_desc')">Mejor rendimiento</button>
+      <button class="chip" [class.active]="sortBy() === 'perf_asc'" (click)="setSort('perf_asc')">Peor rendimiento</button>
+    </div>
+
+    <!-- LISTA DE FAVORITOS -->
+    <div class="favorites-list">
+      @for (coin of sortedFavorites(); track coin.id) {
+        <div class="favorite-row">
+          <div class="coin-info">
+            <span class="rank">#{{ coin.market_cap_rank }}</span>
+            <img [src]="coin.image" [alt]="coin.name" class="coin-img" loading="lazy">
+            <div class="name-symbol">
+              <span class="name">{{ coin.name }}</span>
+              <span class="symbol">{{ coin.symbol | uppercase }}</span>
+            </div>
+          </div>
+          
+          <div class="coin-price">
+            <span class="price">{{ coin.current_price | formatCurrency }}</span>
+            <span class="change" [priceColor]="coin.price_change_percentage_24h">
+              {{ coin.price_change_percentage_24h > 0 ? '▲' : '▼' }}
+              {{ coin.price_change_percentage_24h | percentage }}
+            </span>
+          </div>
+
+          <div class="row-actions">
+            <button class="remove-btn" (click)="removeFavorite(coin.id)" title="Quitar de favoritos">✕</button>
+            <a [routerLink]="['/details', coin.id]" class="detail-btn" title="Ver detalle">→</a>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

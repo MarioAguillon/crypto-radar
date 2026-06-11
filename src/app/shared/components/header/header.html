@@ -12,7 +12,12 @@
     <nav class="nav-links">
       <a routerLink="/home" routerLinkActive="active" class="nav-link">Inicio</a>
       <a routerLink="/search" routerLinkActive="active" class="nav-link">Buscar</a>
-      <a routerLink="/favorites" routerLinkActive="active" class="nav-link">Favoritos</a>
+      <a routerLink="/favorites" routerLinkActive="active" class="nav-link">
+        Favoritos
+        @if (favoritesCount() > 0) {
+          <span class="favorites-badge">{{ favoritesCount() }}</span>
+        }
+      </a>
     </nav>
 
     <!-- Right Side: Global Market Data -->

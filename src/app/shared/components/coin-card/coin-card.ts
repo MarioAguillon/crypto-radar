@@ -1,10 +1,11 @@
-import { Component, Input, Output, EventEmitter, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject, ChangeDetectionStrategy, input, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { UpperCasePipe } from '@angular/common';
 import { Coin } from '../../../core/models/coin.model';
 import { FormatCurrencyPipe } from '../../pipes/format-currency.pipe';
 import { PercentagePipe } from '../../pipes/percentage.pipe';
 import { PriceColorDirective } from '../../directives/price-color.directive';
+import { FavoritesService } from '../../../core/services/favorites.service';
 
 /**
  * Componente de tarjeta reutilizable para mostrar una criptomoneda.
@@ -20,21 +21,22 @@ import { PriceColorDirective } from '../../directives/price-color.directive';
   styleUrl: './coin-card.scss'
 })
 export class CoinCardComponent {
-  @Input() coin!: Coin;
-  @Input() isFavorite: boolean = false;
-  @Output() toggleFavorite = new EventEmitter<Coin>();
-
   private router = inject(Router);
+  private favoritesService = inject(FavoritesService);
+
+  coin = input.required<Coin>();
+  
+  isFavorite = computed(() => this.favoritesService.isFavorite(this.coin().id));
 
   /** Navega a la página de detalle de la moneda */
   navigateToDetail(): void {
-    this.router.navigate(['/details', this.coin.id]);
+    this.router.navigate(['/details', this.coin().id]);
   }
 
   /** Emite el evento de favorito sin propagar el clic a la card */
-  onToggleFavorite(event: Event): void {
+  onToggleFavorite(event: MouseEvent): void {
     event.stopPropagation();
-    this.toggleFavorite.emit(this.coin);
+    this.favoritesService.toggleFavorite(this.coin());
   }
 
   /** Fallback si la imagen del logo no carga */

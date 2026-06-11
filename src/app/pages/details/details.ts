@@ -6,6 +6,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { forkJoin } from 'rxjs';
 
 import { CryptoService } from '../../core/services/crypto.service';
+import { FavoritesService } from '../../core/services/favorites.service';
 import { PriceChartComponent } from '../../shared/components/price-chart/price-chart';
 import { FormatCurrencyPipe } from '../../shared/pipes/format-currency.pipe';
 import { PercentagePipe } from '../../shared/pipes/percentage.pipe';
@@ -32,6 +33,7 @@ export class DetailsComponent implements OnInit {
   private router = inject(Router);
   private location = inject(Location);
   private cryptoService = inject(CryptoService);
+  private favoritesService = inject(FavoritesService);
   private sanitizer = inject(DomSanitizer);
 
   // --- Estado con Signals ---
@@ -46,7 +48,10 @@ export class DetailsComponent implements OnInit {
   selectedCurrency = signal<'usd' | 'eur' | 'cop'>('usd');
   
   // Placeholder para el Favorito
-  isFavorite = signal<boolean>(false);
+  isFavorite = computed(() => {
+    const data = this.coin();
+    return data ? this.favoritesService.isFavorite(data.id) : false;
+  });
 
   // --- Conversor Integrado ---
   conversorAmount = signal<number>(1);
@@ -140,7 +145,10 @@ export class DetailsComponent implements OnInit {
   }
 
   toggleFavorite(): void {
-    this.isFavorite.update(val => !val);
+    const data = this.coin();
+    if (data) {
+      this.favoritesService.toggleFavorite(data);
+    }
   }
 
   goBack(): void {

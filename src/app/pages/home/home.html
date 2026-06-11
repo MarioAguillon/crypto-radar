@@ -62,11 +62,9 @@
   @else {
     <div class="coins-grid">
       @for (coin of filteredCoins(); track coin.id) {
-        <app-coin-card
-          [coin]="coin"
-          [isFavorite]="false"
-          (toggleFavorite)="onToggleFavorite($event)"
-        ></app-coin-card>
+        <app-coin-card 
+          [coin]="coin">
+        </app-coin-card>
       } @empty {
         <div class="empty-state">
           <p>No se encontraron monedas.</p>

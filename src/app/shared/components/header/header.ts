@@ -2,6 +2,7 @@ import { Component, OnInit, inject, signal, ChangeDetectionStrategy } from '@ang
 import { DecimalPipe } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CryptoService } from '../../../core/services/crypto.service';
+import { FavoritesService } from '../../../core/services/favorites.service';
 
 @Component({
   selector: 'app-header',
@@ -13,9 +14,12 @@ import { CryptoService } from '../../../core/services/crypto.service';
 })
 export class HeaderComponent implements OnInit {
   private cryptoService = inject(CryptoService);
+  private favoritesService = inject(FavoritesService);
   
   marketCap = signal<number | null>(null);
   isMarketUp = signal<boolean>(true);
+
+  favoritesCount = this.favoritesService.favoritesCount;
 
   ngOnInit() {
     this.cryptoService.getGlobalData().subscribe({

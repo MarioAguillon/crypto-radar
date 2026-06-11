@@ -15,8 +15,18 @@
       <div class="sk-left">
         <div class="sk-logo"></div>
         <div class="sk-title"></div>
-        <div class="sk-price"></div>
-        <div class="sk-btn"></div>
+        <div class="header-actions">
+          <button 
+            class="premium-fav-btn" 
+            [class.active]="isFavorite()"
+            (click)="toggleFavorite()">
+            @if (isFavorite()) {
+              ★ En mi Radar
+            } @else {
+              ☆ Agregar a mi Radar
+            }
+          </button>
+        </div>
       </div>
       <div class="sk-right">
         <div class="sk-chart"></div>

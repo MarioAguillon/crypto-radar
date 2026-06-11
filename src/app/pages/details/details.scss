@@ -105,6 +105,38 @@
   margin-top: 0.5rem;
 }
 
+.premium-fav-btn {
+  background: transparent;
+  border: 1px solid var(--accent-orange);
+  color: var(--accent-orange);
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-main);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:hover {
+    background: rgba(247, 147, 26, 0.1);
+    transform: translateY(-2px);
+  }
+
+  &.active {
+    background: var(--accent-orange);
+    color: #000;
+    font-weight: 700;
+    
+    &:hover {
+      background: #E68A00;
+      transform: translateY(-2px);
+    }
+  }
+}
+
 .fav-btn {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
